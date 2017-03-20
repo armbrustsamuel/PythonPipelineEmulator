@@ -1,0 +1,9 @@
+lw       4,31
+daddi    1,30
+daddi    2,29
+dadd    31,30,28
+beq     24,25,1
+dadd    31,30,27
+beq     27,26,5
+dadd    31,2,10
+daddi    3,10
