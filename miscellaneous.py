@@ -88,7 +88,22 @@ def readFromPredictionTable(file):
 
     return predictionTable
 
-# Read complete vector with registers from registers.txt
+# TO IMPLEMENT
+def writeInPredictionTable(file, predictionList):
+
+    with open(file, 'w') as csvfile:
+        fieldnames = ['Value', 'Status', 'Changed']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+
+        for i in range(0,32):
+            writer.writerow({'Value': str(predictionList[i][0]), 'Status': str(predictionList[i][1]), 'Changed': str(predictionList[i][2])})
+
+        return 0
+
+
+    # Read complete vector with registers from registers.txt
 # @param file
 # @return list of registers
 def readRegisters(file):
