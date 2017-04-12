@@ -41,11 +41,20 @@ def readInstructionsByCommas(file):
 
     return instructions
 
+def shiftBHR(BHR,newBranch):
+    BHR[3] = BHR[2]
+    BHR[2] = BHR[1]
+    BHR[1] = BHR[0]
+    BHR[0] = int(newBranch)
+    return BHR
+
 # @param program counter
 # @param value for jump --> if taken in branch
 # @return - PC with correct increment
 def incrementPc(PC,jump):
+    # print("antes test:" + str(jump))
     if int(jump) != 0:
+        # print(int(jump))
         return PC + int(jump)
     else:
         return PC + 1
@@ -55,6 +64,8 @@ def incrementPc(PC,jump):
 # @param adjustmentRequired
 # @return - list of Instructions
 def scaling(instructionList, nextInstruction, adjustmentRequired):
+
+    # print("Adjustment required:" + str(adjustmentRequired))
 
     adjust = 0
 
@@ -69,8 +80,13 @@ def scaling(instructionList, nextInstruction, adjustmentRequired):
     if adjustmentRequired == 1:
         adjust = 1
 
-    if adjust == 1 and instructionList[2] == "beq":
-        instructionList[1] = "    "
+    if adjust == 1 and (
+                instructionList[2].find("beq") == -1 or
+                instructionList[2].find("bne") == -1 or
+                instructionList[2].find("beqz") == -1 or
+                instructionList[2].find("bnez") == -1 ):
+        # instructionList[1] = "    "
+        # instructionList[0] = "    "
         adjust = 0
 
     return instructionList
@@ -134,6 +150,33 @@ def writeRegisters(file, R):
 
         return 0 # data correctly stored in registers.txt
 
+# Method to read from prediction table
+def readPredictionTable():
+
+    registers = []
+
+    with open('predictionTable.txt', newline='\n') as inputfile:
+        for row in csv.DictReader(inputfile):
+            #print(row['Register'],row['Value'])
+            lst=str(row['Value'])
+            registers.append(lst)
+
+    return registers
+
+# Method to write in predictionTable
+def writePredictionTable(R):
+
+    with open('predictionTable.txt', 'w') as csvfile:
+        fieldnames = ['Register', 'Value']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+
+        for i in range(0,32):
+            writer.writerow({'Register': '[' + str(i) + ']', 'Value': str(R[i])})
+
+        return 0 # data correctly stored in registers.txt
+
 # Check if a LOAD operation
 # 0 - OK
 # 1 - NOK
@@ -156,14 +199,14 @@ def isStoreFunction(operation):
 # 0 - has destination
 # 1 - has not destination
 def hasDestination(operation):
-    if operation == "dadd" or operation == "dsub" or operation == "dsubi":
+    if operation == "dadd" or operation == "dsub":
     #if operation.find("dadd") != -1 or operation.find("dsub") != -1 or operation.find("dsubi") != -1:
         return 0
     return 1
 
 # Verify if is a math operation
 def isImportingData(operation):
-    if operation == "daddi":
+    if operation == "daddi":    ## CHANGED -
         return 0
     return 1
 
@@ -173,9 +216,16 @@ def isBranchOperation(operation):
         return 0
     return 1
 
+def isBranchThreeOperation(operation):
+    if operation == "beq" or operation == "bne":
+        return 0
+    return 1
+
 def clearRegister():
     empty = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+    empty8 = ['0', '0', '0', '0', '0', '0', '0', '0']
     writeRegisters('registers.txt', empty)
+    writePredictionTable(empty)
 
 def clearVectors():
     clearRegister()

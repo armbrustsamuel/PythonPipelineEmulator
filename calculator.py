@@ -5,6 +5,7 @@
 # @param operand1,operand2
 # @return sum op1 with op2
 def sum(op1,op2):
+    # print("op1: " + str(int(op1)) + " op2: " + str(int(op2)))
     return int(op1)+int(op2)
 
 # SUB operation
@@ -19,9 +20,10 @@ def sub(op1,op2):
 # 0 - TRUE
 # 1 - FALSE
 def beq(op1,op2):
-    if op1 == op2:
-        return 0 # TRUE - equals
-    return 1 # FALSE - not equals
+    if int(op1) == int(op2):
+        print(str(op1) + "  " + str(op2))
+        return 1 # TRUE - equals
+    return 0 # FALSE - not equals
 
 # BRANCH NOT EQUALS operation
 # @param operand1, operand2
@@ -30,8 +32,8 @@ def beq(op1,op2):
 # 1 - FALSE
 def bne(op1,op2):
     if op1 != op2:
-        return 0 # TRUE - not equals
-    return 1 # FALSE - equals
+        return 1 # TRUE - not equals
+    return 0 # FALSE - equals
 
 # BRANCH EQUAL ZERO
 # @param op1
@@ -39,9 +41,11 @@ def bne(op1,op2):
 # 0 - TRUE
 # 1 - FALSE
 def beqz(op1):
-    if op1 == "0":
-        return 0 # TRUE - equal ZERO
-    return 1 # FALSE - not equal ZERO
+    # print("OP1: " + str(op1))
+    if str(op1) == str(0):
+        # print('eq zero:'+ str(op1))
+        return 1 # TRUE - equal ZERO
+    return 0 # FALSE - not equal ZERO
 
 # BRANCH NOT EQUAL ZERO
 # @param op1
@@ -49,9 +53,10 @@ def beqz(op1):
 # 0 - TRUE
 # 1 - FALSE
 def bnez(op1):
-    if op1 != "0":
-        return 0 # TRUE - not equal ZERO
-    return 1 # FALSE - equal ZERO
+    if str(op1) != str(0):
+        print('not eq zero:'+ str(op1))
+        return 1 # TRUE - not equal ZERO
+    return 0 # FALSE - equal ZERO
 
 # LOAD operation
 def lw(op1):
