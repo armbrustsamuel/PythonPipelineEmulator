@@ -27,6 +27,8 @@ wrongPrediction = 0
 rightPrediction = 0
 branch_value = 0
 branch_execution = 0
+predictionTable = misc.readFromPredictionTable("predictionTable.txt")
+# print(str(predictionTable))
 
 # Branch History Register
 BHR = [0,0,0,0]
@@ -66,14 +68,14 @@ ppView.Header()
 
 # Execution of instructions - Implement for in range
 #for instruction in instructionMemory:
-for i in range(1,len(instructionMemory)+12):
+for i in range(1,len(instructionMemory)+13):
 
     # SEARCH ############ - OK
     current_search = ppPhase.search(PC) # TO ADJUST RETURN
     #print("current Search" + str(current_search))
 
     # WRITE BACK ############
-    # current_register = ppPhase.saveAtRegister(current_memory,0,R)
+    current_register = ppPhase.saveAtRegister(current_memory,0,R)
     #print(current_register)
 
     # MEMORY ############
@@ -137,6 +139,16 @@ for i in range(1,len(instructionMemory)+12):
                     wrongInstruction = 0
             branch_execution = 0
             branch_value = 0
+
+            print(wrongInstructionCounter)
+            if ( (wrongInstructionCounter % 2) == 0):
+                print("predicao" + str(predictionTable[int(addressGselect)]))
+                if (predictionTable[int(addressGselect)].find("0") != -1):
+                    predictionTable[int(addressGselect)] = 1
+                else:
+                    predictionTable[int(addressGselect)] = 0
+
+                misc.writePredictionTable(predictionTable)
             # print("wrong instruction: " + str(wrongInstruction))
 
 
@@ -200,6 +212,7 @@ for i in range(1,len(instructionMemory)+12):
     if current_execute == "JUMP":
         newPC = misc.incrementPc(PC,current_decode[1])
 
+
     # Test if an operation as SUM or SUB
     if misc.hasDestination(current_decode[0]) == 0:
         R[int(current_decode[1][1:])] = str(current_execute)
@@ -237,10 +250,12 @@ for i in range(1,len(instructionMemory)+12):
 
     misc.writeRegisters('registers.txt',R)
 
+
     print("R[1] = " + str(R[1]))
     print("R[2] = " + str(R[2]))
     print("R[3] = " + str(R[3]))
     print("R[4] = " + str(R[4]))
+    print("R[5] = " + str(R[5]))
     print("R[7] = " + str(R[7]))
     print("R[19] = " + str(R[19]))
     print("R[20] = " + str(R[20]))

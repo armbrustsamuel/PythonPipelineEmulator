@@ -61,10 +61,10 @@ def execute(opCode,reg1,reg2):
     registers = misc.readRegisters('registers.txt')
     if reg1 != " ":
         op1 = registers[int(reg1[1:])]
-        print("op1: " +str(op1))
+        # print("op1: " +str(op1))
     if reg1 != " ":
         op2 = registers[int(reg2[1:])]
-        print("op2: " + str(op2))
+        # print("op2: " + str(op2))
     if opCode.find("daddi") != -1:
         return calc.daddi(op1,op2)
     elif opCode.find("dadd") != -1:

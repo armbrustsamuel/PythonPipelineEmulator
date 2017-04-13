@@ -54,7 +54,7 @@ def shiftBHR(BHR,newBranch):
 def incrementPc(PC,jump):
     # print("antes test:" + str(jump))
     if int(jump) != 0:
-        # print(int(jump))
+        print(int(jump))
         return PC + int(jump)
     else:
         return PC + 1
